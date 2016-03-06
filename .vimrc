@@ -6,15 +6,29 @@ call plug#begin('~/.vim/plugged')
 let g:python_host_prog='/usr/local/bin/python'
 
 " Bundle 'wincent/Command-T'
-Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+
 
 " Add plugins to &runtimepath
 call plug#end()
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Map leader to space
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader = "\<Space>"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Map leader to space
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>t :CtrlP<cr>
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Exit from insertmode/vmode
