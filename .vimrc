@@ -2,19 +2,14 @@
 " General
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set tabstop=2
-set shiftwidth=2
-
 call plug#begin('~/.vim/plugged')
-
+let g:python_host_prog='/usr/local/bin/python'
 
 " Bundle 'wincent/Command-T'
 Plug 'kien/ctrlp.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
-Plug'tpope/vim-surround'
-
-" Group dependencies, vim-snippets depends on ultisnips
+Plug 'tpope/vim-surround'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 
@@ -25,8 +20,8 @@ call plug#end()
 " Exit from insertmode/vmode
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 inoremap <c-u> <esc>viwUi
-inoremap jk <esc>
-vnoremap jk <esc>
+inoremap ;j <esc>
+vnoremap ;j  <esc>
 nnoremap <c-u> viwU<esc>
 
 
