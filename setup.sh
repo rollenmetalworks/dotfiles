@@ -1,11 +1,11 @@
-#!/bin/bash
+#/bin/bash
 
 # Install Homebrew
 # /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # check if there is an existing .vimrc in the home directory
 TARGET_VIMRC=$HOME/.vimrc
-TARGET_NVIMRC=$HOME/.nvimrc
+TARGET_NVIMRC=$HOME/.config/nvim/init.vim
 TARGET_VIM_HOME_FOLDER=$HOME/.vim
 TARGET_NVIM_HOME_FOLDER=$HOME/.nvim
 PROJECT_ROOT=`dirname $0`
@@ -41,6 +41,9 @@ if [ "$QUIT" = true ]; then
 	exit
 fi
 
+echo "Creating .vim folder"
+mkdir $TARGET_VIM_HOME_FOLDER
+
 echo "Linking .vimrc $PROJECT_VIMRC to $TARGET_VIMRC"
 ln -s "$PROJECT_VIMRC" "$TARGET_VIMRC"
 
@@ -51,6 +54,10 @@ echo "Linking .nvim $TARGET_NVIM_HOME_FOLDER to $TARGET_VIM_HOME_FOLDER"
 ln -s "$TARGET_VIM_HOME_FOLDER" "$TARGET_NVIM_HOME_FOLDER"
 
 echo "Downloading and installing vimplug"
-curl -fLo $TARGET_VIM_HOME_FOLDER/autoload/plug.vim --create-dirs \
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+
+#Install support for neovim
+pip install neovim
 
