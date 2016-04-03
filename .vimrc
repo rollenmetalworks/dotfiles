@@ -5,16 +5,23 @@
 call plug#begin('~/.vim/plugged')
 let g:python_host_prog='/usr/local/bin/python'
 
-" Bundle 'wincent/Command-T'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'mattn/emmet-vim'
-Plug 'leafgarland/typescript-vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'ctrlpvim/ctrlp.vim'                               " Autocomplete
+Plug 'mattn/emmet-vim'                                  " Fancy html shortcuts to edit tags
+Plug 'leafgarland/typescript-vim'                       " fml can't remember what this does
+Plug 'scrooloose/nerdtree'                              " Project viewer
+Plug 'tpope/vim-fugitive'                               " git
+Plug 'tpope/vim-surround'                               " Change brackets
+Plug 'rking/ag.vim'                                     " Search for stuff in files, like grep
+Plug 'tpope/vim-unimpaired'                             " logical aliases for pairs
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'     " snippets controller | default snippeds
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' } " Plugin to coordinate completion engines
+Plug 'junegunn/vim-easy-align'                          " Align text like this awesome row of \"'s
+Plug 'plasticboy/vim-markdown'                          " Markdown editor
+Plug 'junegunn/goyo.vim'                                " Distraction Free writing in vim
+Plug 'reedes/vim-pencil'                                " using vim to write stuff
+Plug 'pangloss/vim-javascript'                          " Javascript syntax / highlighting
+Plug 'mxw/vim-jsx'                                      " JSX file syntax / hignlighting
+Plug 'hail2u/vim-css3-syntax'                           " CSS3 highlighting
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -23,6 +30,9 @@ call plug#end()
 " Map leader to space
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader = "\<Space>"
+let g:user_emmet_leader_key='<C-e>'
+
+set tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General configs
@@ -81,3 +91,33 @@ inoremap <c-c> <nop>
 inoremap <c-[> <nop>
 nnoremap <c-w><c-w> <nop>
 " }}}
+
+
+" Easy Align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+" Mardown shortcuts
+let g:vim_markdown_folding_disabled = 1
+au! BufRead,BufNewFile *.markdown set filetype=mkd
+au! BufRead,BufNewFile *.md       set filetype=mkd
+autocmd FileType mkd nnoremap <leader>m :!pandoc -t html -f markdown % -o index.html<cr>
+autocmd FileType javascript nnoremap <leader>m :!node %<cr>
+
+" Ultiship expanding
+let g:UltiSnipsExpandTrigger = "<nop>"
+let g:ulti_expand_or_jump_res = 0
+function! ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
+
+
