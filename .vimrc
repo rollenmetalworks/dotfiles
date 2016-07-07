@@ -19,9 +19,12 @@ Plug 'junegunn/vim-easy-align'                          " Align text like this a
 Plug 'plasticboy/vim-markdown'                          " Markdown editor
 Plug 'junegunn/goyo.vim'                                " Distraction Free writing in vim
 Plug 'reedes/vim-pencil'                                " using vim to write stuff
+Plug 'reedes/vim-lexical'                               " Spell checking
 Plug 'pangloss/vim-javascript'                          " Javascript syntax / highlighting
 Plug 'mxw/vim-jsx'                                      " JSX file syntax / hignlighting
 Plug 'hail2u/vim-css3-syntax'                           " CSS3 highlighting
+Plug 'scrooloose/syntastic'                             " synta checker
+Plug 'editorconfig/editorconfig-vim'                    " Load editorconfig
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -86,7 +89,6 @@ nnoremap K <c-w>k
 nnoremap H <c-w>h
 
 " Kill keys -----{{{
-inoremap <esc> <nop>
 inoremap <c-c> <nop>
 inoremap <c-[> <nop>
 nnoremap <c-w><c-w> <nop>
@@ -100,12 +102,22 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-" Mardown shortcuts
-let g:vim_markdown_folding_disabled = 1
-au! BufRead,BufNewFile *.markdown set filetype=mkd
-au! BufRead,BufNewFile *.md       set filetype=mkd
-autocmd FileType mkd nnoremap <leader>m :!pandoc -t html -f markdown % -o index.html<cr>
-autocmd FileType javascript nnoremap <leader>m :!node %<cr>
+
+augroup markdownediting
+	autocmd!
+	" Mardown shortcuts
+	au! BufRead,BufNewFile *.markdown set filetype=mkd
+	au! BufRead,BufNewFile *.md       set filetype=mkd
+	au! BufWritePost README.md :echom 'writing' | !pandoc -t html -f markdown % -o README.html
+	au! FileType mkd call SetCopyBuffer()
+	"autocmd FileType markdown,mkd call pencil#init()
+				" \ | call lexical#init()
+	autocmd FileType text         call pencil#init()
+augroup END
+
+function! SetCopyBuffer()
+	nnoremap <leader>s :!cat README.html\|pbcopy<cr>
+endfunction
 
 " Ultiship expanding
 let g:UltiSnipsExpandTrigger = "<nop>"
@@ -120,4 +132,13 @@ function! ExpandSnippetOrCarriageReturn()
 endfunction
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
+" Syntastic configs
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['jshint']
