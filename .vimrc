@@ -7,7 +7,6 @@ let g:python_host_prog='/usr/local/bin/python'
 
 Plug 'ctrlpvim/ctrlp.vim'                               " Autocomplete
 Plug 'mattn/emmet-vim'                                  " Fancy html shortcuts to edit tags
-Plug 'leafgarland/typescript-vim'                       " fml can't remember what this does
 Plug 'scrooloose/nerdtree'                              " Project viewer
 Plug 'tpope/vim-fugitive'                               " git
 Plug 'tpope/vim-surround'                               " Change brackets
@@ -23,8 +22,13 @@ Plug 'reedes/vim-lexical'                               " Spell checking
 Plug 'pangloss/vim-javascript'                          " Javascript syntax / highlighting
 Plug 'mxw/vim-jsx'                                      " JSX file syntax / hignlighting
 Plug 'hail2u/vim-css3-syntax'                           " CSS3 highlighting
-Plug 'scrooloose/syntastic'                             " synta checker
 Plug 'editorconfig/editorconfig-vim'                    " Load editorconfig
+Plug 'neomake/neomake'                                  " non blocking make
+Plug 'leafgarland/typescript-vim'                       " typescript syntax highlighting
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }             " Vim Proc
+Plug 'Quramy/tsuquyomi'                                 " hopefully error reporting for typescript
+
+" Plug 'scrooloose/syntastic'                             " synta checker
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -133,12 +137,19 @@ endfunction
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
 " Syntastic configs
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 0
+"let g:syntastic_auto_loc_list = 0 
+"let g:syntastic_check_on_open = 0 
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_javascript_checkers = ['jshint']
 
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['jshint']
+" Change quickfix color
+hi Search cterm=NONE ctermfg=white ctermbg=blue
+
+" Neomake configs
+let g:neomake_typescript_tsc_maker = {}
+autocmd! BufWritePost * Neomake!
